@@ -11,7 +11,7 @@ class ApiPendidikanController extends Controller
     public function getAll()
     {
         $pendidikan = Pendidikan::all();
-        return Response::json($pendidikan, 200);
+        return Response::json($pendidikan, 201);
     }
 
     public function createPen(Request $request)

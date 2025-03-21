@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Backend\PendidikanController;
@@ -13,8 +14,15 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::prefix('backend')->group(function () {
     Route::resource('pendidikan', PendidikanController::class);
     Route::resource('pengalaman_kerja', PengalamanKerjaController::class);
+});
 
-    // Rute API untuk Pendidikan
+// Rute API untuk Pendidikan
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// Menggunakan namespace Backend
+Route::group(['namespace' => 'Backend'], function () {
     Route::get('api/pendidikan', [ApiPendidikanController::class, 'getAll']);
     Route::post('api/pendidikan', [ApiPendidikanController::class, 'createPen']);
     Route::put('api/pendidikan/{id}', [ApiPendidikanController::class, 'updatePen']);
