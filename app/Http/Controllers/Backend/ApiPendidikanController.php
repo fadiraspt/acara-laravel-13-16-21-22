@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Backend;
 
 use App\Models\Pendidikan;
@@ -11,37 +12,41 @@ class ApiPendidikanController extends Controller
     public function getAll()
     {
         $pendidikan = Pendidikan::all();
-        return Response::json($pendidikan, 201);
+        return response()->json($pendidikan);
+    }
+
+    public function getPen($id)
+    {
+        $pendidikan = Pendidikan::find($id);
+        return response()->json($pendidikan);
     }
 
     public function createPen(Request $request)
     {
         Pendidikan::create($request->all());
-
         return response()->json([
             'status' => 'ok',
             'message' => 'Pendidikan berhasil ditambahkan!'
         ], 201);
     }
 
-    public function updatePen($id, Request $request)
+    public function updatePen(Request $request, $id)
     {
-        $pendidikan = Pendidikan::find($id);
+        $pendidikan = Pendidikan::findOrFail($id);
         $pendidikan->update($request->all());
-
         return response()->json([
             'status' => 'ok',
-            'message' => 'Pendidikan berhasil diubah!'
-        ], 201);
+            'message' => 'Pendidikan berhasil diperbarui!'
+        ]);
     }
 
     public function deletePen($id)
     {
-        Pendidikan::destroy($id);
-        
+        $pendidikan = Pendidikan::findOrFail($id);
+        $pendidikan->delete();
         return response()->json([
             'status' => 'ok',
             'message' => 'Pendidikan berhasil dihapus!'
-        ], 201);
+        ]);
     }
 }
